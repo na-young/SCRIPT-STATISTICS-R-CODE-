@@ -1,0 +1,81 @@
+#0325
+
+install.packages("ggplot2")
+library(ggplot2)
+detach(package:ggplot2)
+
+trees
+boxplot(trees)
+summary(trees)
+pairs(trees)
+
+setwd('C:/Users/lge/ETC/Desktop/201831804t사과통/자룐')
+getwd()
+
+dat1<-mtcars
+str(dat1)
+
+dat2<-subset(dat1,select=c('mpg','disp','hp','wt','qsec'))
+dat2
+pairs(dat2)
+boxplot(dat2)
+
+cars
+lm(dist~speed,data=cars)
+summary(lm(dist~speed,data=cars))
+anova(lm(dist~speed,data=cars)) ##모형에대한 적합도 검정
+
+dat1
+lm(mpg~wt,data=dat1) ##negative관계(slope<0)
+summary(lm(mpg~wt,data=dat1))
+anova(lm(mpg~wt,data=dat1))
+
+summary(fit1<-lm(mpg~wt,data=dat1))
+plot(dat1$wt,dat1$mpg,xlab='weight',
+ylab='mpg',col=67,main="plot of wt & mpg")
+
+xx<-dat1$wt;yy<-37.28-5.34*xx
+lines(xx,yy,col="violet",lwd=2)
+
+#practice
+lm(mpg~wt,data=dat1) ##회귀모형(y와 x간의 관계)
+plot(dat1$wt,dat1$mpg,xlab='weight',
+ylab='mpg',col=67,main="plot of wt & mpg") ##y와x의산점도그리기
+xx<-dat1$wt;yy<-37.28-5.34*xx ##y와x간의 관계그린 변수 생성
+lines(xx,yy,col="violet",lwd=2) ##선추가
+
+#my_turn
+summary(fit1<-lm(mpg~qsec,data=dat1))
+plot(dat1$qsec,dat1$mpg,xlab='qsec',
+ylab='mpg',col=67)
+
+xx<-dat1$qsec;yy<--5.114+1.412*xx
+lines(xx,yy,col='violet',lwd=2)
+
+#b
+with(mtcars,wt+hp)
+summary(fit1<-lm(mpg~wt+hp,mtcars)) ##x값이 커지면 커질수록 r값이 커진다(유효성)
+dat1$cyl2<-as.factor(as.character(dat1$cyl))
+summary(dat1$cyl2)
+summary(fit1<-lm(mpg~wt+cyl2,data=dat1))
+anova(fit1<-lm(mpg~wt+cyl2,data=dat1))
+
+chickwts
+summary(chickwts)
+boxplot(weight~feed,data=chickwts)
+anova(lm(weight~feed,data=chickwts))
+
+mtcars2<-mtcars
+mtcars2$mpg[c(2,3)]<-NA
+head(mtcars2)
+na.omit(mtcars2)
+nayoung<-data.frame(c(1,2,3,4,5))
+dim(nayoung)
+?dim
+dim(na.omit(mtcars2))
+summary(na.omit(mtcars2))
+mean(mtcars2$mpg)#mtcars2$mpg #DATA에 미씽(결측값)이 있어서 계산이 안됨
+mean(mtcars2$mpg,na.rm=T) #미씽이 있으면 넘기고 계산해라
+                          ##미세먼지 자료를 가지고 관심있는 지역을 SELECT/평균수치로 BARPLOT
+                          ##미세먼지로 성공했으면 다른 변수가지고도 똑같이 만들어보기.
+                          ##na.rm=T 이 함수 중요.
