@@ -1,0 +1,15 @@
+#0312
+
+x<-c('yes','no','yes','no','yes')
+
+as.factor(x)
+table(x)
+
+xx<-as.factor(x)
+
+pie(table(xx))
+barplot(table(xx))
+
+dat1<-read.csv('crime_new.csv')
+dat1
+table(dat1)
