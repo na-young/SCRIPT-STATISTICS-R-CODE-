@@ -1,0 +1,66 @@
+#0401
+
+runif(100)
+mean(runif(100))
+mean(runif(100,2,5))
+punif(0.5,0,1)
+qunif(0.5,0,1)
+dunif(0.3,0,1)
+
+norm ##정규분포x,mean,sd
+
+pnorm(0.5,0,1)
+qnorm(0.5,0,1)
+dnorm(0.3,0,1)
+
+M=NULL
+V=NULL
+for(i in 1:10000){
+x=sample(height,size=10)
+M[i]=mean(x)
+V[i]=var(x)
+}
+na.rm=T
+
+M<-V<-NULL
+for(i in 1:10000){
+cat('i:',i,'/n')
+x<-sample(height,size=10000)
+M[i]<-mean(x)
+V[i]<-var(x)
+}
+qqnorm(M)
+qqline(M)
+
+mean(M)
+sd(M)
+mean(V)
+mean(V*9/10)
+
+M<-NULL ##part2 중심극한정리에 의해서 유니폼분포를 따르지만 x바는 정규분포를 따름qqplot그려봐
+for(i in 1:10000){
+cat('i:',i,'/n')
+x<-runif(100,0,1)
+M[i]<-mean(x)
+}
+
+qqnorm(M)
+qqline(x,col='violet')
+abline(c(-4,4),c(0.4,0.6),col='violet')
+hist(M,probability=T)
+lines(density(M),col='violet')
+
+?rexp
+rexp(100,2)
+hist(rexp(100,2))
+var(rexp(10000000,2)) ##0.25에 data를 더 많이 generation시키면 가까워짐
+
+x<-c(15.5,11.21,12.67,8.87,12.15,2.06)
+T<-(mean(x)-8.1)/(sd(x)/sqrt(length(x)))#T구하기.x바-mu/(S/sqrt(n))
+T
+
+qt(0.025,5) ##df=5,t분포는 0에대해 대칭
+qt(0.975,5)
+
+2*pt(-1.22,5) ##p-value구하기
+              ##p-value>alpha==not reject H0
