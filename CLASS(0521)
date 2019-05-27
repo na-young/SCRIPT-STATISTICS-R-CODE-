@@ -1,0 +1,36 @@
+#0521
+
+##167
+#cochran-armitage trend test
+prop.test(c(50,40,20),c(100,120,100)) #p-value = 4.449e-05
+prop.trend.test(c(50,40,20),c(100,120,100)) #p-value = 7.957e-06
+
+library(dplyr)
+
+dat1<-with(mtcars,ifelse(mpg<15,1,ifelse(mpg<22,2,3)))
+dat_am<-xtabs(~mtcars$am+dat1)
+apply(dat_am,2,sum)
+
+prop.trend.test(c(0,6,7),c(5,18,9)) #0,6,7->dat_am$(am==1),5,18,9->sum
+
+##????????? ??????????????? ?????? ???????????????????????? ??????.
+prop.trend.test(c(13,10,10),c(42,14,28))
+chisq.test(matrix(c(13,29,10,4,10,18),ncol=3))
+
+##169
+mcnemar.test(matrix(c(5,15,5,7),ncol=2)) #p-value = 0.04417
+mcnemar.test(matrix(c(50,15,5,70),ncol=2))#p-value = 0.04417
+
+mcnemar.test(matrix(c(5,3,12,10),ncol=2))#p-value = 0.03887=????????? ??????
+
+mcnemar.test(matrix(c(16,3,0,20),ncol = 2))#p-value = 0.2482(toystory4-??????x)
+
+
+plot(스트레스인지율,교통사고,main="Scatterplot Example",xlab="스트레스인지율",ylab="교통사고",pch=19)
+abline(lm(교통사고~스트레스인지율),col='violet')#regression line(y~x)
+
+cor(스트레스인지율,교통사고,method='spearman')
+
+cor.test(스트레스인지율,교통사고,method='spearman')
+
+boxplot(스트레스인지율~교통사고,ylab='스트레스인지율',xlab='교통사고',col=2:6)
