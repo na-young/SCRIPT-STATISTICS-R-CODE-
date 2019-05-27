@@ -1,0 +1,99 @@
+#0409
+
+library(MASS)
+sigma<-matrix(c(10,6,6,10),nc=2,nr=2)
+
+dat1<-mvrnorm(n=10,mu=c(150,93),sigma) ##c()의 차가 클수록 더 가까워진다
+dat1<-data.frame(dat1)
+dat1
+summary(dat1)
+apply(dat1,2,sd) ##standard devaition
+sqrt(10)
+
+with(dat1,cov(X1,X2))
+with(dat1,t.test(X1,X2,paired=T)) ##참고0408.X1>X2
+
+sigma<-matrix(c(10,1,1,10),nc=2,nr=2)
+dat1<-mvrnorm(n=1000,mu=c(150,93),sigma) ##c()의 차가 클수록 더 가까워진다
+dat1<-data.frame(dat1)
+pairs(dat1)
+
+sigma<-matrix(c(10,1,1,10),nc=2,nr=2)
+dat1<-mvrnorm(n=15,mu=c(150,93),sigma) ##c()의 차가 클수록 더 가까워진다(유의)
+dat1<-data.frame(dat1)
+with(dat1,t.test(X1,X2),paired=T)
+
+sigma<-matrix(c(10,6,6,10),nc=2,nr=2)
+dat1<-mvrnorm(n=12,mu=c(90,93),sigma)
+dat1<-data.frame(dat1)
+with(dat1,t.test(X1,X2,paired=T))
+
+set.seed(1)
+sigma<-matrix(c(10,6,6,10),nc=2,nr=2)
+dat1<-mvrnorm(n=7,mu=c(90,93),sigma)
+dat1<-data.frame(dat1)
+with(dat1,t.test(X1,X2,paired=T))
+
+set.seed(1)
+sigma<-matrix(c(10,6,6,10),nc=2,nr=2)
+dat1<-mvrnorm(n=7,mu=c(90,93),sigma)
+dat1<-data.frame(dat1)
+with(dat1,t.test(X1,X2,paired=F))
+
+?t.test
+?var.test
+
+with(dat1,plot(X1,X2,col='purple'))
+with(dat1,var.test(X1,X2))
+
+with(dat1,t.test(X1,X2,paired=F,
+var.equal=FALSE))
+
+sleep
+mtcars
+
+##mpg연비평균비교:cyl=4 vs cyl=6
+
+?subset
+
+mean(mtcars$mpg)
+subset(mtcars,cyl==4,mean(mpg))
+subset(mtcars,cyl==6,mean(mpg))
+
+dat2<-subset(mtcars,cyl==4|cyl==6)
+
+x.4cyl<-dat2[dat2$cyl==4,'mpg']
+x.6cyl<-dat2[dat2$cyl==6,'mpg']
+var.test(x.4cyl,x.6cyl)
+#unequal variance
+t.test(x.4cyl,x.6cyl,var.equal=F)
+t.test(x.4cyl,x.6cyl)
+
+with(dat2,t.test(mpg~cyl))
+
+#new.auto.manual
+dat3<-subset(mtcars,am==1|am==0)
+
+x.1am<-dat3[dat3$am==1,'mpg']
+x.0am<-dat3[dat3$am==0,'mpg']
+var.test(x.1am,x.0am)
+#unequal variance
+t.test(x.1am,x.0am,var.equal=F)
+
+var(x.0am);var(x.1am)
+
+with(dat3,t.test(mpg~am))
+
+boxplot(mpg~am,mtcars)
+
+par(mfrow=c(1,2))
+
+hist(x.0am,probability=T)
+lines(density(x.0am),col='violet')
+
+hist(x.1am,probability=T)
+lines(density(x.1am),col='violet')
+
+with(mtcars,shapiro.test(mpg)) ##정규성만족,p-value=0.1
+with(mtcars,qqnorm(mpg))
+with(mtcars,qqline(mpg))
