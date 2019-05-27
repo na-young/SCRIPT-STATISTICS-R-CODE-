@@ -1,0 +1,123 @@
+#0415-16
+
+setwd('C:\\Users\\lge\\ETC\\Desktop\\201831804t사과통')
+install.packages('factoextra')
+library(factoextra)
+
+data(housetasks) ## data set in factoextra
+
+?housetasks #House tasks contingency table
+
+head(housetasks)
+
+## 1. convert the data as a table
+dt <- as.table(as.matrix(housetasks))
+
+colSums(dt)
+rowSums(dt)
+?balloonplot
+
+## 2. Graph
+install.packages('gplots')
+library(gplots)
+balloonplot(t(dt), main ="housetasks", xlab ="", ylab="",
+            label = FALSE, show.margins = FALSE)
+
+
+balloonplot(dt, main ="housetasks", xlab ="", ylab="",
+            label = FALSE, show.margins = FALSE)
+
+##Plot a graphical matrix where each cell contains
+##a dot whose size reflects the relative
+##magnitude of the corresponding component.
+
+
+##Mosaic / association plots
+
+library(graphics)
+
+mosaicplot(dt,color=F,  las = 1,main = "housetasks")
+#las=2 lay the level in horizontal
+
+
+mosaicplot(dt, color = TRUE, las = 1,main = "housetasks")
+#las=1 lay the level in horizontal
+
+mosaicplot(dt, color = TRUE, las = 2,main = "housetasks")
+#las=2 lay the level in vertical
+
+#0416
+
+setwd('C:\\Users\\lge\\ETC\\Desktop\\201831804t사과통\\자룐')
+dat1<-read.csv('지역별평균좌석수.csv')
+
+row.names(dat1)<-dat1$지역 ##행의 이름을 의미없는 숫자에서 지역으로 이름바꾸기
+dat2<-dat1[,-1]#첫번째 col을 빼라
+dt<-as.table(as.matrix(dat2))
+dt
+colnames(dt)<-c('Years:2015','Year:2016','Year:2017') ##불필요한것들을 정리
+mosaicplot(dt,color=TRUE,las=1,main="1관당 평균 좌석수") ##las=1<-lay the level in horizontal
+mosaicplot(t(dt),color=TRUE,las=1,main="1관당 평균 좌석수") ##t=행이랑 열 바꾸기
+
+data_marriage<-read.csv('신혼부부수.csv')
+str(data_marriage)
+row.names(data_marriage)<-data_marriage$행정구역별
+data2_marriage<-data_marriage[,-1]
+
+data_marriage_new<-as.table(as.matrix(data2_marriage))
+
+colnames(data_marriage_new)<-c('1년차','2년차','3년차','4년차','5년차') ##불필요한것들을 정리
+mosaicplot(data_marriage_new,color=TRUE,las=1,main="지역별_혼인연차별_신혼부부_수")
+
+balloonplot((data_marriage_new), main ="지역별_혼인연차별_신혼부부_수", xlab ="", ylab="",
+            label = FALSE, show.margins = FALSE)
+#(p67)
+setwd('C:\\Users\\lge\\ETC\\Desktop\\201831804t사과통\\자룐\\교과서 자료')
+dental=read.csv("dental.csv")
+shapiro.test(dental$resp) ##0.05보다 작다->유의X->정규분포x
+hist(dental$resp,probability=T)
+lines(density(dental$resp))
+
+attach(dental)
+shapiro.test(log(resp)) ##log변환후 결과값 달라짐
+hist(log(resp),probability=T)
+lines(density(log(resp)))
+detach(dental)
+
+par(mfrow=c(1,2))
+
+boxplot(resp~treatment,data=dental,col=c('antiquewhite','purple'),main="dental_resp")
+boxplot(log(resp)~treatment,data=dental,col=c('antiquewhite','purple'),main="log(dental_resp)")
+
+var.test(log(resp)~treatment,data=dental) ##귀무가설기각X,같다고할수있다,pooled variance사용
+t.test(log(resp)~treatment,var.equal=T)
+
+mean(log(subset(dental,treatment=='test')$resp))
+
+##control:mu1(mu1이랑 mu2 구분=알파벳순)
+##test:mu2
+##H1:mu1<mu2
+
+t.test(log(resp)~treatment,var.equal=T,alter='less') ##당연히 기각
+
+##(new data로 시작)
+setwd('C:\\Users\\Administrator\\Desktop\\201831804t사과통\\자룐')
+data_new<-read.csv('지역별평균좌석수 - 복사본.csv')
+
+attach(data_new)
+shapiro.test(X2015)
+detach(data_new)
+
+##정규성만족
+hist(X2015,probability=T)
+lines(density(X2015))
+
+var.test(X2015~group,data=data_new)
+
+boxplot(X2015~group,data=data_new,col=c('antiquewhite','purple'))
+
+##control:mu1(mu1이랑 mu2 구분=알파벳순)
+##test:mu2
+##H1:mu1>mu2
+t.test(X2015~group,data=data_new,var.equal=T,alter='greater')
+##borderline significance
