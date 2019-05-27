@@ -1,0 +1,59 @@
+#0422
+
+setwd('C:\\Users\\lge\\ETC\\Desktop\\도서관자료2015-2016-2017')
+dat2015<-read.csv('dat도서관2015.csv',stringsAsFactors=F)
+dat2016<-read.csv('dat도서관2016.csv',stringsAsFactors=F)
+dat2017<-read.csv('dat도서관2017.csv',stringsAsFactors=F)
+
+dat15<-subset(dat2015,select=c("지역","X1관당.평균.도서"))
+dat15$year<-2015
+dat16<-subset(dat2016,select=c("지역","X1관당.평균.도서"))
+dat16$year<-2016
+dat17<-subset(dat2017,select=c("지역","X1관당.평균.도서"))
+dat17$year<-2017
+dat.lib<-rbind(dat15,dat16,dat17)
+names(dat.lib)<-c('Loc','Ave.books','Year')
+
+city.list<-c('서울','부산','대구','인천','광주','대전','울산','세종','경기')
+
+eval<-dat.lib$Loc%in%city.list
+
+dat.lib$grp<-ifelse(eval,1,2)
+
+
+attach(dat.lib)
+par(mfrow=c(2,2))
+hist(Ave.books,probability=T)
+lines(density(Ave.books),col=2)
+qqnorm(Ave.books);qqline(Ave.books,col=2)
+shapiro.test(Ave.books) ##정규성 불만족
+detach(dat.lib)
+
+
+##1번 질문: 2015년 비해서 2017년 값이 증가였나 ?
+##방법-1
+#H1:m1<m2
+x<-subset(dat.lib,Year==2015)$Ave.books
+y<-subset(dat.lib,Year==2017)$Ave.books
+wilcox.test(y,x,paired=TRUE,alternative='greater') #significant
+
+##방법-2
+#H1:Y-X>0
+wilcox.test(y-x,alternative='greater') #significant
+
+##방법-3
+#H1:m1(year=2015)<m2(year=2017)
+with(subset(dat.lib,Year!=2016),
+wilcox.test(Ave.books~Year,paired=T,
+alternative='less')) #significant
+
+
+##2번 질문
+##2017년 대도시 지역(grp=1)의 값이 더 큰가?
+
+with(subset(dat.lib,Year==2017),
+wilcox.test(Ave.books~grp,paired=F))#P=0.321,not significant
+
+with(subset(dat.lib,Year==2017),boxplot(Ave.books~grp,col=2:3,
+ylab='Average Books',
+main="2017",names=c('Big Area','Small Area')))
