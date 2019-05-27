@@ -1,0 +1,78 @@
+#0402
+
+setwd('C:/Users/lge/ETC/Desktop/201831804t사과통/')
+dat1<-mtcars$mpg
+
+with(mtcars,t.test(mpg,mu=27)) ##양측검정 밑(ny)과 동일
+t.test(dat1,mu=27) ##t.test/mpg/양측검정/기각
+
+t.test(dat1,mu=27,alter='greater')
+
+#H1:mu>27 ##단일검정
+with(mtcars,t.test(mpg,mu=27,alternative=c("greater")))
+#H0:mu<27
+with(mtcars,t.test(mpg,mu=27,alternative=c("less")))
+
+dat2<-read.csv('미세먼지.csv')
+미세먼지<-dat2$pm10
+미세2<-dat2[!is.na(dat2$pm10),]
+summary 
+t.test(미세먼지,mu=31)
+
+#H1:mu>31
+with(dat2,t.test(pm10,mu=31,alternative=c("greater")))
+#H0:mu<31
+with(dat2,t.test(pm10,mu=31,alternative=c("less")))
+
+airquality ##새로운 자료/단일검정
+Ozone
+#H1:mu>40
+with(airquality,t.test(Ozone,mu=40,alternative=c("greater")))
+#H0:mu<40
+with(airquality,t.test(Ozone,mu=40,alternative=c("less")))
+
+oz<-airquality$Ozone
+summary(oz)
+
+?qqplot
+
+airquality$Ozone
+
+airquality2<-airquality[!is.na(airquality$Ozone),] ##with=$로대체가능(방법알지?)
+
+with(airquality2,hist(Ozone,prob=T))
+with(airquality2,lines(density(Ozone)))
+
+with(airquality2,qqnorm(Ozone)) ##line에 qqplot이 안따르므로 정규분포아니다
+with(airquality2,qqline(Ozone,col='violet',lwd=3))
+
+dim(airquality2)
+
+shapiro.test(airquality$Ozone)
+
+with(airquality2,log(ozone)) ##log변환(더 가까워짐)
+
+
+qqnorm(log(airquality2$Ozone))
+qqline(log(airquality2$Ozone),col='violet',lwd=3))
+
+#new미세먼지로 실습해보기
+set
+mise<-미세먼지$pm10
+dat1<-read.csv('미세먼지.csv')
+mise2<-dat1[!is.na(dat1$pm10),]
+mise3<-subset
+subset(mise2)
+
+par(mfrow=c(2,1))
+
+with(mise2,hist(pm10,prob=T))
+with(mise2,lines(density(pm10)))
+
+with(mise2,qqnorm(pm10))
+with(mise2,qqline(pm10,col='violet',lwd=3))
+
+out$p.value[]
+out[]
+names(out)
+out
